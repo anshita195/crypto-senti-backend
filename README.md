@@ -2,6 +2,12 @@
 
 This backend powers a full-stack crypto sentiment analysis platform, integrating real-time price and Reddit data with ML-powered sentiment analysis.
 
+## Dataset
+- **Source:** [Crypto Tweets Sentiment Dataset (Kaggle)](https://www.kaggle.com/datasets/leoth9/crypto-tweets)
+- **Usage:** Used for training and evaluating the DistilBERT sentiment model.
+- **Preprocessing:** Tweets were auto-labeled for sentiment using TextBlob, and the model was trained to classify as Positive, Neutral, or Negative.
+- **Note:** The raw dataset is not included in this repo due to size and licensing. Please download it directly from Kaggle if you wish to reproduce the results.
+
 ## Features
 - Node.js + Express API for data processing and serving
 - MongoDB for persistent storage
