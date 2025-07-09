@@ -1,5 +1,6 @@
 const express = require('express');
 const { getCoinData } = require('../controllers/coinController');
+const { getModelPerformance, evaluateSentiment, getCorrelationAnalysis } = require('../controllers/mlController');
 
 function setupRoutes(app) {
   const router = express.Router();
@@ -11,6 +12,11 @@ function setupRoutes(app) {
 
   // Coin data endpoints
   router.get('/api/coins/:coin/timeseries', getCoinData);
+
+  // ML endpoints
+  router.get('/api/ml/performance', getModelPerformance);
+  router.post('/api/ml/evaluate', evaluateSentiment);
+  router.get('/api/ml/correlation', getCorrelationAnalysis);
 
   app.use(router);
 }

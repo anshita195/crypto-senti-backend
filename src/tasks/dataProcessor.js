@@ -1,26 +1,13 @@
 const axios = require('axios');
 const CoinData = require('../models/CoinData');
+const MLSentimentService = require('../services/mlSentimentService');
 const logger = require('../utils/logger');
 
 const SUPPORTED_COINS = ['bitcoin', 'ethereum', 'dogecoin'];
 const BATCH_SIZE = process.env.BATCH_SIZE || 100;
 
-// Simple sentiment analysis using keyword matching
-function analyzeSentiment(text) {
-  const positiveWords = ['bullish', 'moon', 'buy', 'growth', 'profit', 'gain', 'up', 'good', 'great', 'excellent'];
-  const negativeWords = ['bearish', 'crash', 'sell', 'loss', 'down', 'bad', 'terrible', 'scam', 'dump'];
-  
-  const words = text.toLowerCase().split(/\s+/);
-  let score = 0;
-  
-  words.forEach(word => {
-    if (positiveWords.includes(word)) score += 1;
-    if (negativeWords.includes(word)) score -= 1;
-  });
-  
-  // Normalize score between -1 and 1
-  return Math.max(-1, Math.min(1, score / 5));
-}
+// Initialize ML sentiment service
+const mlSentimentService = new MLSentimentService();
 
 async function fetchCoinPrices() {
   try {
@@ -61,7 +48,7 @@ async function fetchRedditData(coin) {
         q: coin,
         sort: 'top',
         t: 'day',
-        limit: 100,
+        limit: 250, // Increased limit for more posts
         type: 'link'
       },
       headers: {
@@ -90,20 +77,24 @@ async function fetchAndProcessData() {
       // Extract texts for sentiment analysis
       const texts = redditData.map(post => `${post.title} ${post.selftext}`).filter(Boolean);
       
-      // Analyze sentiment
-      const sentiments = texts.map(text => analyzeSentiment(text));
+      // Analyze sentiment using ML service
+      const sentiments = await Promise.all(texts.map(async text => {
+        try {
+          return await mlSentimentService.analyzeSentimentHybrid(text);
+        } catch (error) {
+          logger.error('Error in sentiment analysis:', error);
+          return mlSentimentService.analyzeSentimentBaseline(text);
+        }
+      }));
       
       // Calculate average sentiment
       const avgSentiment = sentiments.reduce((sum, score) => sum + score, 0) / sentiments.length;
       
-      // Get top posts
-      const topPosts = redditData
-        .map((post, index) => ({
-          ...post,
-          sentiment: sentiments[index]
-        }))
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 5);
+      // Store ALL posts with sentiment (not just top 5)
+      const allPosts = redditData.map((post, index) => ({
+        ...post,
+        sentiment: sentiments[index]
+      }));
       
       // Save to database
       await CoinData.create({
@@ -114,7 +105,7 @@ async function fetchAndProcessData() {
           score: avgSentiment,
           count: sentiments.length
         },
-        topPosts
+        topPosts: allPosts // Store all posts
       });
     }
   } catch (error) {
