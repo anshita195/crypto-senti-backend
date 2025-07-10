@@ -1,28 +1,21 @@
-# Node.js dependencies
+# Node
 node_modules/
+.env
+
+# Python/ML
+ML/sentiment_model/
+ML/*.csv
+ML/*.npy
+ML/*.json
+ML/__pycache__/
+ML/*.safetensors
 
 # Logs
 *.log
 
-# Environment files
-.env
-.env.*
-
-# Python bytecode
-*.pyc
-__pycache__/
-
-# Model weights and data (as per README)
-ML/sentiment_model/
-
-# OS files
+# OS
 .DS_Store
 Thumbs.db
-
-# Misc
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 # Ignore coverage and test output
 coverage/
