@@ -61,7 +61,7 @@ class MLSentimentService {
   // Updated ML-based sentiment analysis using local Python service
   async analyzeSentimentML(text) {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/predict', { text });
+      const response = await axios.post('http://34.67.119.39:8000/predict', { text });
       const sentiment = response.data.sentiment;
       if (sentiment === 'Positive') return 1;
       if (sentiment === 'Negative') return -1;
