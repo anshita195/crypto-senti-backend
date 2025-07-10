@@ -15,6 +15,9 @@ async function fetchCoinPrices() {
       params: {
         ids: SUPPORTED_COINS.join(','),
         vs_currencies: 'inr'
+      },
+      headers: {
+        'x-cg-pro-api-key': process.env.COINGECKO_API_KEY
       }
     });
     return response.data;
