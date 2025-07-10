@@ -11,18 +11,26 @@ const mlSentimentService = new MLSentimentService();
 
 async function fetchCoinPrices() {
   try {
-    const response = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
+    const response = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest', {
       params: {
-        ids: SUPPORTED_COINS.join(','),
-        vs_currencies: 'inr'
+        symbol: SUPPORTED_COINS.map(c => c.toUpperCase()).join(','),
+        convert: 'INR'
       },
       headers: {
-        'x-cg-pro-api-key': process.env.COINGECKO_API_KEY
+        'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY
       }
     });
-    return response.data;
+    // CoinMarketCap returns data in a different structure than CoinGecko
+    // We'll normalize it to match the rest of your code
+    const data = response.data.data;
+    const prices = {};
+    for (const coin of SUPPORTED_COINS) {
+      const symbol = coin.toUpperCase();
+      prices[coin] = { inr: data[symbol].quote.INR.price };
+    }
+    return prices;
   } catch (error) {
-    logger.error('Error fetching coin prices:', error);
+    logger.error('Error fetching coin prices from CoinMarketCap:', error.response?.data || error.message);
     throw error;
   }
 }
