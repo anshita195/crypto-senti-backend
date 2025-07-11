@@ -27,6 +27,14 @@ app.use(limiter);
 // Routes
 setupRoutes(app);
 
+// TEMPORARY: Test endpoint to check Reddit env variables
+app.get('/test-reddit-env', (req, res) => {
+  res.json({
+    REDDIT_CLIENT_ID: process.env.REDDIT_CLIENT_ID ? 'SET' : 'NOT SET',
+    REDDIT_CLIENT_SECRET: process.env.REDDIT_CLIENT_SECRET ? 'SET' : 'NOT SET'
+  });
+});
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
