@@ -41,7 +41,13 @@ async function fetchRedditData(coin) {
   // Load static data from JSON file
   const dataPath = path.join(__dirname, '../data/sampleRedditData.json');
   const staticData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
-  const posts = staticData[coin] || [];
+  const posts = (staticData[coin] || []).map((post, idx) => ({
+    ...post,
+    id: `${coin}-${idx}`,
+    text: post.selftext,
+    subreddit: coin,
+    score: post.sentiment
+  }));
   logger.debug(`Loaded ${posts.length} static Reddit posts for ${coin}`);
   return posts;
 }
