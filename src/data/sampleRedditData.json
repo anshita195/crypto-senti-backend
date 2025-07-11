@@ -1,0 +1,26 @@
+{
+  "bitcoin": [
+    {"title": "Bitcoin hits new all-time high!", "selftext": "BTC is mooning 🚀", "sentiment": 0.95},
+    {"title": "Bitcoin price crashes overnight", "selftext": "Lost a lot of money, not happy.", "sentiment": -0.8},
+    {"title": "Why I’m holding my Bitcoin for the long term", "selftext": "I believe in the fundamentals and the future of BTC.", "sentiment": 0.8},
+    {"title": "Bitcoin mining is destroying the environment", "selftext": "The energy consumption is just too high.", "sentiment": -0.7},
+    {"title": "Institutions are buying more Bitcoin", "selftext": "Bullish news for the market!", "sentiment": 0.85},
+    {"title": "Bitcoin transaction fees are ridiculous", "selftext": "It cost me $30 to send $100.", "sentiment": -0.6}
+  ],
+  "ethereum": [
+    {"title": "Ethereum 2.0 is a game changer", "selftext": "Super bullish on ETH.", "sentiment": 0.9},
+    {"title": "Ethereum gas fees are killing me", "selftext": "Can't afford to use the network.", "sentiment": -0.7},
+    {"title": "DeFi on Ethereum is the future", "selftext": "So many innovative projects being built.", "sentiment": 0.88},
+    {"title": "ETH price drops after SEC comments", "selftext": "Regulation fears are real.", "sentiment": -0.65},
+    {"title": "Staking rewards are awesome!", "selftext": "Earning passive income with ETH 2.0.", "sentiment": 0.92},
+    {"title": "Ethereum network congestion is a nightmare", "selftext": "Transactions are so slow lately.", "sentiment": -0.5}
+  ],
+  "dogecoin": [
+    {"title": "Dogecoin to the moon!", "selftext": "Elon tweeted again, let's go!", "sentiment": 0.85},
+    {"title": "Dogecoin is a joke", "selftext": "Why do people still buy this?", "sentiment": -0.6},
+    {"title": "Dogecoin community is the best", "selftext": "Love the memes and positive vibes.", "sentiment": 0.8},
+    {"title": "DOGE price tanks after hype fades", "selftext": "Should have sold at the top.", "sentiment": -0.7},
+    {"title": "Dogecoin accepted at more stores!", "selftext": "Adoption is growing, bullish!", "sentiment": 0.87},
+    {"title": "Dogecoin is just a pump and dump", "selftext": "Lost money again, never learning.", "sentiment": -0.75}
+  ]
+} 
