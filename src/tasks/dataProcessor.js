@@ -64,13 +64,19 @@ async function fetchRedditData(coin) {
       },
       headers: {
         'Authorization': `Bearer ${accessToken}`,
-        'User-Agent': 'TradeBot/1.0'
+        'User-Agent': 'TradeBot/1.0 (by /u/yourusername)'
       }
     });
 
     return response.data.data.children.map(post => post.data);
   } catch (error) {
     logger.error('Error fetching Reddit data:', error.response?.data || error.message);
+    // Log the full error for debugging
+    if (error.response) {
+      logger.error('Reddit error response:', JSON.stringify(error.response.data));
+    } else {
+      logger.error('Reddit error:', error.message);
+    }
     // Return empty array instead of throwing to allow the process to continue
     return [];
   }
@@ -98,6 +104,11 @@ async function fetchAndProcessData() {
         }
       }));
       
+      // Fallback: If no posts or sentiments, skip saving and log a warning
+      if (sentiments.length === 0) {
+        logger.warn(`No Reddit posts or sentiments found for ${coin}. Skipping save to DB.`);
+        continue;
+      }
       // Calculate average sentiment
       const avgSentiment = sentiments.reduce((sum, score) => sum + score, 0) / sentiments.length;
       
