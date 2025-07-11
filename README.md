@@ -1,3 +1,25 @@
+## Important Note: Reddit API Limitations & Data Source Transparency
+
+> **Honest Transparency:**
+>
+> This backend was built to fetch and analyze live Reddit posts for real-time crypto sentiment analysis. However, due to Reddit’s API restrictions and aggressive blocking/rate-limiting of cloud server IPs (including Google Cloud and Render), it is not possible to fetch live Reddit data from the deployed backend. This is a well-known issue affecting many developers and is outside my control.
+>
+> - **In Production (Render/Google Cloud):** The backend serves realistic static sample Reddit data for Bitcoin, Ethereum, and Dogecoin. This ensures the platform remains fully functional and demonstrates all sentiment analysis features, even though the data is not live.
+> - **Locally:** When running the backend on your own machine, it will attempt to fetch live Reddit data as intended (assuming your Reddit API credentials are set up and your IP is not blocked).
+>
+> #### Why This Approach?
+> I did my best to provide a realistic, robust experience. Despite correct API credentials, whitelisting, and multiple deployment strategies, Reddit’s API blocks most cloud-hosted requests. This limitation is transparently documented here so you know exactly what to expect.
+>
+> #### How to Run with Live Reddit Data Locally
+> 1. Clone the repo and install dependencies.
+> 2. Set up your `.env` file with valid Reddit API credentials.
+> 3. Start the backend locally (`npm run dev`).
+> 4. The backend will fetch live Reddit posts for sentiment analysis.
+>
+> **Note:** In production/demo deployments, you will see static sample data due to the above limitations.
+
+---
+
 # Crypto Sentiment Backend
 
 This backend powers a full-stack crypto sentiment analysis platform, integrating real-time price and Reddit data with ML-powered sentiment analysis.
