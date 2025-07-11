@@ -2,6 +2,8 @@ const axios = require('axios');
 const CoinData = require('../models/CoinData');
 const MLSentimentService = require('../services/mlSentimentService');
 const logger = require('../utils/logger');
+const path = require('path');
+const fs = require('fs');
 
 const SUPPORTED_COINS = ['bitcoin', 'ethereum', 'dogecoin'];
 const BATCH_SIZE = process.env.BATCH_SIZE || 100;
@@ -36,50 +38,10 @@ async function fetchCoinPrices() {
 }
 
 async function fetchRedditData(coin) {
-  try {
-    // First, get an access token
-    const authResponse = await axios.post('https://www.reddit.com/api/v1/access_token',
-      'grant_type=client_credentials',
-      {
-        auth: {
-          username: process.env.REDDIT_CLIENT_ID,
-          password: process.env.REDDIT_CLIENT_SECRET
-        },
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-    );
-
-    const accessToken = authResponse.data.access_token;
-
-    // Now fetch the posts with the access token
-    const response = await axios.get(`https://oauth.reddit.com/search`, {
-      params: {
-        q: coin,
-        sort: 'top',
-        t: 'day',
-        limit: 250, // Increased limit for more posts
-        type: 'link'
-      },
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'User-Agent': 'TradeBot/1.0 (by /u/yourusername)'
-      }
-    });
-
-    return response.data.data.children.map(post => post.data);
-  } catch (error) {
-    logger.error('Error fetching Reddit data:', error.response?.data || error.message);
-    // Log the full error for debugging
-    if (error.response) {
-      logger.error('Reddit error response:', JSON.stringify(error.response.data));
-    } else {
-      logger.error('Reddit error:', error.message);
-    }
-    // Return empty array instead of throwing to allow the process to continue
-    return [];
-  }
+  // Load static data from JSON file
+  const dataPath = path.join(__dirname, '../data/sampleRedditData.json');
+  const staticData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+  return staticData[coin] || [];
 }
 
 async function fetchAndProcessData() {
