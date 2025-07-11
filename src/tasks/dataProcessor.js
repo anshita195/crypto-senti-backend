@@ -41,7 +41,9 @@ async function fetchRedditData(coin) {
   // Load static data from JSON file
   const dataPath = path.join(__dirname, '../data/sampleRedditData.json');
   const staticData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
-  return staticData[coin] || [];
+  const posts = staticData[coin] || [];
+  logger.debug(`Loaded ${posts.length} static Reddit posts for ${coin}`);
+  return posts;
 }
 
 async function fetchAndProcessData() {
