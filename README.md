@@ -71,4 +71,5 @@ npm run dev
 ## Notes
 - Do **NOT** commit model weights, large data files, or secrets to the repo.
 - The backend calls the Python ML service at `http://127.0.0.1:8000/predict` for sentiment analysis.
+- Link To Jupyter notebook https://colab.research.google.com/drive/1Bs716Uva8EYPOltaiFkFGNwSJc7aunz6?usp=sharing
 
